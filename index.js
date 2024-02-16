@@ -19,9 +19,12 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+app.get("/api", function (_, res) {
+  const time = new Date();
+  res.json({
+    unix: time.getTime(),
+    utc: time.toUTCString()
+  });
 });
 
 app.get('/api/:time', (req, res) => {
@@ -31,7 +34,10 @@ app.get('/api/:time', (req, res) => {
       ? req.params.time
       : timeNumber
   );
-  res.json({
+  const utc = time.toUTCString();
+  res.json(utc === 'Invalid Date' ? {
+    error: utc
+  } : {
     unix: time.getTime(),
     utc: time.toUTCString()
   });
